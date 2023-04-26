@@ -22,6 +22,3 @@ void loop(){
   lcd.setCursor(0, 1);
   lcd.print(i);
 }
-
-// gawa ng function na mag mag bubukas ng servo flap after 12 grams pati 
-// limit ay yung 12 grams - nagana ang code wag idelete

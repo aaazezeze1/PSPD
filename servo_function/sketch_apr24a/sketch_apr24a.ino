@@ -1,26 +1,17 @@
 #include <Wire.h>
-#include <Servo.h>
+#include <HX711_ADC.h>
 
-Servo myservo;
-int pos = 0;
-
-// kapag 12 to magbubukas yung flap pero kapag less than 12 magsasarado siya if nasa 180 degrees na or hindi siya gagalaw
-float lcdgramsmet = 4;
+HX711_ADC LoadCell(4, 5);
 
 void setup() {
-  myservo.attach(9);
+  
+  LoadCell.begin();
+  LoadCell.start(2000);
+  LoadCell.setCalFactor(100.0);
 }
 
 void loop() {
-  if (lcdgramsmet == 12) {
-    for  (pos = 0; pos <= 180; pos += 1) {
-      myservo.write(pos);
-      break;
-    }
-  } else {
-      for (pos = 180; pos >= 0; pos -= 1) {
-        myservo.write(pos);
-        break;
-      }
-  }
+  LoadCell.update();
+  float i = LoadCell.getData();
+  Serial.println(i);
 }

@@ -4,6 +4,8 @@
 #include <HX711_ADC.h>
 
 LiquidCrystal_I2C lcd(0x27, 16, 2);
+// attach load cell to pin 4 and 5
+HX711_ADC LoadCell(4, 5);
 Servo myservo;
 
 int pos = 0;
@@ -32,14 +34,14 @@ void loop() {
   /* flap opens when 12 grams. if not 12 grams but at a 180 degree angle flap closes. 
   if grams is not 12 grams and at starting position then the flap stays closed */
   if (lcdgramsmet == 12) {
-    for  (pos = 0; pos <= 180; pos += 1) {
+    for (pos = 0; pos <= 180; pos += 1) {
       myservo.write(pos);
       break;
     }
   } else {
-      for (pos = 180; pos >= 0; pos -= 1) {
-        myservo.write(pos);
-        break;
-      }
+    for (pos = 180; pos >= 0; pos -= 1) {
+      myservo.write(pos);
+      break;
+    }
   }
 }

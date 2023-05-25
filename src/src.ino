@@ -58,8 +58,8 @@ void loop() {
   // if 12 grams is met then turn the motor on
   // if grams is 0 then stop the motor
   if (lcdgramsmet >= 12) {
-    digitalWrite(in3, LOW);
-    digitalWrite(in4, HIGH);
+    digitalWrite(in3, HIGH);
+    digitalWrite(in4, LOW);
     analogWrite(enB, 255);
   } else if (lcdgramsmet <= epsilon){
     digitalWrite(in3, LOW);

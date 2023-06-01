@@ -1,13 +1,16 @@
 // add the libraries needed for the components of the machine to work
 #include <Wire.h>
-#include <Servo.h>
 #include <LiquidCrystal_I2C.h>
 #include <HX711_ADC.h>
+#include <VarSpeedServo.h>
 
 // assign variables to be used
 LiquidCrystal_I2C lcd(0x27, 16, 2);
 HX711_ADC LoadCell(4, 5);
-Servo servoflap;
+
+// servo flap setup
+VarSpeedServo servoflap;
+const int servoPin = 9;
 
 // smallest possible value to help stop the n20 from dispensing paper when 0 grams is detected
 const float epsilon = 1E-3; 
@@ -22,12 +25,13 @@ void setup() {
   LoadCell.begin();
   LoadCell.start(2000);
   // calibration factor to measure grams
-  LoadCell.setCalFactor(1816.64);
+  LoadCell.setCalFactor(1802.74);
   lcd.init();
   lcd.backlight();
 
-  // flap setup
-  servoflap.attach(9);
+  // servo speed and angle setup
+  servoflap.attach(servoPin);
+  servoflap.write(0, 255, true);
 
   //paper dispenser setup
   pinMode(enB, OUTPUT);
@@ -46,12 +50,12 @@ void loop() {
   lcd.print(lcdgramsmet);
 
   // servo flap
-  // if 12 grams is met turn the servo 0 degrees
-  // if grams is not 12 then turn the servo 180 degrees or flap will stay at closed position
+  // if 12 grams is met turn the servo 90 degrees
+  // if grams is not 12 then turn the servo 0 degrees or flap will stay at closed position
   if (lcdgramsmet >= 12) {
-    servoflap.write(0);
+    servoflap.write(90, 30, true);
   } else {
-    servoflap.write(180);
+    servoflap.write(0, 30, true);
   }
 
   // paper dispenser
